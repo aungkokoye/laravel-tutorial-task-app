@@ -26,15 +26,21 @@ docker exec -it laravel_app bash
 - composer install 
 - npm install && npm run dev
 - php artisan key:generate
-- php artisan migrate
+- php artisan  migrate:fresh --seed
 ````
-#### PHPStorm IDE DB settings
+#### PHPStorm IDE
+DB settings
 ````
 host: 127.0.0.1
 port: 3506
 user: root
 password: root
 database: laravel_task
+````
+ID Plugin settings  (used composer package "barryvdh/laravel-ide-helper")
+````
+php artisan ide-helper:generate
+php artisan ide-helper:models --nowrite
 ````
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
