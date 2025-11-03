@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         // for seeders
         $this->call([
             TaskSeeder::class,
+            BookReviewSeeder::class,
         ]);
 
         User::factory(5)->create();
