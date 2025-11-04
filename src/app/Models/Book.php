@@ -18,6 +18,13 @@ class Book extends Model
         return $this->hasMany(Review::class);
     }
 
+    protected static function booted(): void
+    {
+        static::created(fn ($book) => cache()->forget('book-'.$book->id));
+        static::updated(fn ($book) => cache()->forget('book-'.$book->id));
+        static::deleted(fn ($book) => cache()->forget('book-'.$book->id));
+    }
+
     /**
      * Scope a query to only include books with titles matching the search term.
      * App\Models\Book::title('search term')->get();
