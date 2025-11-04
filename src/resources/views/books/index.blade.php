@@ -60,6 +60,7 @@
                         <div>
                             <div class="text-gray-600 text-right">
                                 {{ number_format($book->reviews_avg_rating, 1) }}
+                                <x-star-rating :rating="$book->reviews_avg_rating" />
                             </div>
                             <div class="text-gray-600 text-right">
                                 Out of {{ $book->reviews_count }}

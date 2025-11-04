@@ -8,7 +8,12 @@
 
 @section('content')
 
-    <div class="rounded-lg bg-gray-200 px-4 py-4 shadow-sm hover:shadow-md mb-4">
+    <div class="mb-4 flex items-center justify-end gap-4">
+        <a href="{{ route('books.index') }}" class="btn-m btn-default "> Back To Book List</a>
+        <a href="{{ route('books.reviews.create', $book) }}" class="btn-m btn-primary "> Add Review</a>
+    </div>
+
+    <div class="rounded-lg bg-gray-50 px-4 py-4 shadow-sm hover:shadow-md mb-4">
         <div class="flex items-center justify-between">
             <!-- Left side: title and author -->
             <div>
@@ -22,10 +27,10 @@
             <!-- Right side: rating and review -->
             <div>
                 <div class="text-gray-600 text-right">
-                    Avg Rating : {{ number_format($book->reviews_avg_rating, 1) ?? 0.0 }}
+                    {{ number_format($book->reviews_avg_rating, 1) ?? 0.0 }} <x-star-rating :rating="$book->reviews_avg_rating" />
                 </div>
                 <div class="text-gray-600 text-right">
-                    Total {{ Str::plural('Review', $book->reviews_count) }} : {{ $book->reviews_count ?? 0 }}
+                    {{ $book->reviews_count ?? 0 }} {{ Str::plural('review', $book->reviews_count) }}
                 </div>
                 <div class="text-gray-600 text-right">
                     Creates At: {{ $book->created_at->diffForHumans() }} | Updated At: {{ $book->updated_at->diffForHumans() }}
@@ -47,7 +52,8 @@
                 <!-- Right side: rating and review -->
                 <div class="shrink-0 text-right">
                     <div class="text-gray-600">
-                        Rating : {{ number_format($review->rating, 1) ?? 0.0 }}
+                        {{ number_format($review->rating, 1) ?? 0.0 }}
+                        <x-star-rating :rating="$review->rating" />
                     </div>
                     <div class="text-gray-600">
                         Creates At: {{ $review->created_at->diffForHumans() }}
