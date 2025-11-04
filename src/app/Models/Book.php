@@ -74,6 +74,30 @@ class Book extends Model
         return $query->having('reviews_count', '>=', $minimumReview);
     }
 
+    public function scopePopularLastMonth(Builder $query): Builder
+    {
+        return $query->popular(from: now()->subMonth(), to: now())
+            ->AverageRating(from: now()->subMonth(), to: now())->minimumReview(2);
+    }
+
+    public function scopePopularLast6Months(Builder $query): Builder
+    {
+        return $query->popular(from: now()->subMonths(6), to: now())
+            ->AverageRating(from: now()->subMonths(6), to: now())->minimumReview(5);
+    }
+
+    public function scopeHighestReviewLastMonth(Builder $query): Builder
+    {
+        return $query->AverageRating(from: now()->subMonth(), to: now())
+            ->popular(from: now()->subMonth(), to: now())->minimumReview(2);
+    }
+
+    public function scopeHighestReviewLast6Months(Builder $query): Builder
+    {
+        return $query->AverageRating(from: now()->subMonths(6), to: now())
+            ->popular(from: now()->subMonths(6), to: now())->minimumReview(5);
+    }
+
     private function filterByDate(Builder $query, ?string $from, ?string $to): void
     {
         if ($from && $to) {

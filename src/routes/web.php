@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Support\Facades\Route;
@@ -51,3 +52,5 @@ Route::delete('/tasks/{task}', function(Task $task) {
     $task->delete();
     return redirect()->route('task.index')->with('success', 'Task delete successfully');
 })->name('task.destroy');
+
+Route::resource('books', BookController::class);
