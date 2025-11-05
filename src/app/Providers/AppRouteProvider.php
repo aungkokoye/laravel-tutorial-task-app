@@ -15,7 +15,7 @@ class AppRouteProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Load your custom book routes
+        // Load your custom task routes
         Route::middleware('web')
             ->group(base_path('routes/task.php'));
     }
