@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BookReviewRequest;
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as RoutingControllers;
+use Illuminate\Routing\Controller as BaseControllers;
 
-class ReviewController extends RoutingControllers
+class ReviewController extends BaseControllers
 {
     public function __construct()
     {

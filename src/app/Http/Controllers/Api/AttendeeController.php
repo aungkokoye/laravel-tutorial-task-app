@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller as BaseController;
 use App\Http\Resources\AttendeeResource;
 use App\Http\Traits\CanLoadRelations;
 use App\Models\Attendee;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
-class AttendeeController extends Controller
+class AttendeeController extends BaseController
 {
     use CanLoadRelations;
 
