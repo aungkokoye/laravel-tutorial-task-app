@@ -5,17 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Http\Resources\EventResource;
+use App\Http\Traits\CanLoadRelations;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    use CanLoadRelations;
+
+    private array $relations = ['user', 'attendees'];
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return EventResource::collection(Event::with('user', 'attendees')->get());
+        $builder = $this->loadRelations(Event::query());
+        return EventResource::collection($builder->latest()->paginate(10));
     }
 
     /**
@@ -35,7 +41,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return new EventResource($event->load('user', 'attendees'));
+        return new EventResource($this->loadRelations($event));
     }
 
     /**
@@ -50,6 +56,7 @@ class EventController extends Controller
             'end_time'      => 'sometimes|date|after:start_time'
         ])
         );
+
         return EventResource::make($event);
     }
 

@@ -16,6 +16,7 @@ class EventResource extends JsonResource
     {
         // do not call from $request, $this is the model instance
         return [
+            'id'            => $this->id,
             'name'          => $this->name,
             'description'   => $this->description,
             'start_time'    => $this->start_time,

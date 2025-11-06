@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendee extends Model
 {
+    protected $fillable = ['event_id', 'user_id'];
+
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
