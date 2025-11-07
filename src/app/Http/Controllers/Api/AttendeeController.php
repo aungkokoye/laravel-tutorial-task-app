@@ -8,10 +8,18 @@ use App\Http\Traits\CanLoadRelations;
 use App\Models\Attendee;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AttendeeController extends BaseController
 {
-    use CanLoadRelations;
+    use CanLoadRelations, AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->authorizeResource(Attendee::class, 'attendee');
+
+    }
 
     private array $relations = ['user'];
 
@@ -60,8 +68,16 @@ class AttendeeController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event, Attendee $attendee)
+    public function destroy(Event $event, Attendee $attendee, Request $request)
     {
+        // 2 examples of without authorizeResource in line 20
+
+        // $this->authorize('delete', $attendee);
+
+        // if ($request->user()->cannot('delete', $attendee)) {
+        //     abort(403, 'You are not authorized to delete this attendee.');
+        // }
+
         $attendee->delete();
 
         return response()->json('Attendee deleted successfully');

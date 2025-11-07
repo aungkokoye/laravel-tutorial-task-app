@@ -7,6 +7,7 @@ use App\Http\Resources\EventResource;
 use App\Http\Traits\CanLoadRelations;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EventController extends BaseController
 {
@@ -19,18 +20,12 @@ class EventController extends BaseController
 
     private array $relations = ['user', 'attendees'];
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $builder = $this->loadRelations(Event::query());
         return EventResource::collection($builder->latest()->paginate(10));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(EventRequest $request)
     {
         $event = $request->validated();
@@ -40,35 +35,32 @@ class EventController extends BaseController
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Event $event)
     {
         return new EventResource($this->loadRelations($event));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Event $event)
     {
+        Gate::authorize('update-event', $event);
+
         $event->update($request->validate([
             'name'          => 'sometimes|string|max:255', // removed 'required' to make it optional
             'description'   => 'nullable|string',
             'start_time'    => 'sometimes|date',
             'end_time'      => 'sometimes|date|after:start_time'
-        ])
+            ])
         );
 
         return EventResource::make($event);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Event $event)
     {
+        if (Gate::denies('delete-event', $event)) {
+            abort(403, 'You are not authorized to delete this event.');
+        }
+
         $event->delete();
         // return response(status: 204);
         return response()->noContent();

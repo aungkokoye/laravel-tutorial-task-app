@@ -13,7 +13,9 @@ class Event extends Model
     /** @use HasFactory<EventFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'user_id', 'start_time', 'end_time'];
+    protected $fillable = ['name', 'description', 'user_id', 'start_time', 'end_time',
+        'event_id'
+    ];
 
     public function attendees(): HasMany
     {
