@@ -113,4 +113,6 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'default_cc_email' => env('DEFAULT_CC_EMAIL', 'default@test.com'),
+
 ];

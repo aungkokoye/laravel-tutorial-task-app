@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+
+use App\Notifications\EventCreateNotification;
 use Illuminate\Routing\Controller as BaseController;
 use App\Http\Requests\EventRequest;
 use App\Http\Resources\EventResource;
@@ -29,10 +31,14 @@ class EventController extends BaseController
     public function store(EventRequest $request)
     {
         $event = $request->validated();
-        return Event::create([
+        $event = Event::create([
             ...$event,
-            'user_id' => rand(1, 10)
+            'user_id' => request()->user()->id,
         ]);
+
+        $event->user->notify(new EventCreateNotification($event));
+
+        return new EventResource($event);
     }
 
     public function show(Event $event)

@@ -37,7 +37,15 @@ user: root
 password: root
 database: laravel_task
 ````
-ID Plugin settings  (used composer package "barryvdh/laravel-ide-helper")
+#### Schickling MailCatcher Documentation:
+
+MailCatcher is configured by setting the environment variable in your `.env` file:
+
+For testing email functionality, we are using the Schickling MailCatcher.
+It is accessible at `http://localhost:2080`.
+This allows you to view emails sent by the application without needing a real email server.
+
+#### ID Plugin settings  (used composer package "barryvdh/laravel-ide-helper")
 ````
 php artisan ide-helper:generate
 php artisan ide-helper:models --nowrite
