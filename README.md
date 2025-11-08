@@ -45,6 +45,26 @@ For testing email functionality, we are using the Schickling MailCatcher.
 It is accessible at `http://localhost:2080`.
 This allows you to view emails sent by the application without needing a real email server.
 
+#### Laravel Crontab Scheduler 
+
+All scheduler commands are defined in `app/route/console.php` file.
+To run the scheduler, make sure the cron service is running as `scheduler` Docker container.
+`php artisan schedule:run` will be run every minute by cron inside that container.
+
+log view
+```
+docker logs laravel_scheduler -f
+```
+#### RabbitMQ Information:
+
+RabbitMQ is used for message queuing in the application.
+
+It is accessible at `http://localhost:15672` with the following credentials:
+```
+Username: guest
+Password: guest
+```
+
 #### ID Plugin settings  (used composer package "barryvdh/laravel-ide-helper")
 ````
 php artisan ide-helper:generate
