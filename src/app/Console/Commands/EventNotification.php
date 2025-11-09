@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\EventReminderJob;
 use App\Models\Event;
-use App\Notifications\EventReminderNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -26,7 +26,7 @@ class EventNotification extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $events = Event::with('attendees.user')
             ->where('start_time', '>=', now())
@@ -34,20 +34,15 @@ class EventNotification extends Command
             ->get();
 
         $eventCount = $events->count();
+
+        if($eventCount) {
+            EventReminderJob::dispatch($events)
+                ->onConnection(config('queue.queue_connection'))
+                ->onQueue(config('queue.notification_queue'));
+        }
+
         $eventLabel = Str::plural('event', $eventCount);
-
         $this->info("Found {$eventCount} {$eventLabel}.");
-
-        $totalNotifications = 0;
-        $events->each(function (Event $event) use (&$totalNotifications) {
-            $attendeeCount = $event->attendees->count();
-            $totalNotifications += $attendeeCount;
-            $event->attendees->each(function ($attendee) use ($event) {
-                $user = $attendee->user;
-                $user->notify(new EventReminderNotification($event));
-            });
-        });
-
-        $this->info("{$totalNotifications} event notification/s sent successfully.");
+        $this->info("Event notification/s sent successfully.");
     }
 }

@@ -7,9 +7,11 @@ services:
     restart: unless-stopped
     ports:
       - "8275:80"
+      - "9001:9001"
     volumes:
       - ../src:/var/www/html
       - ./php-apache/vhost.config:/etc/apache2/sites-available/000-default.conf
+      - ./php-apache/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/public
       XDEBUG_MODE: debug,develop # enable debug and develop features
@@ -57,19 +59,19 @@ services:
     networks:
       - laravel
 
-#  rabbitmq:
-#    image: rabbitmq:3-management
-#    container_name: rabbitmq
-#    ports:
-#      - "5672:5672"       # AMQP protocol port
-#      - "15672:15672"     # HTTP management UI port
-#    environment:
-#      RABBITMQ_DEFAULT_USER: guest
-#      RABBITMQ_DEFAULT_PASS: guest
-#    volumes:
-#      - rabbitmq_data:/var/lib/rabbitmq
-#    networks:
-#      - laravel
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"       # AMQP protocol port
+      - "15672:15672"     # HTTP management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - laravel
 
 networks:
   laravel:

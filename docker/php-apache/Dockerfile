@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     curl \
-    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath
+    supervisor \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath sockets
 
 # Install Xdebug extension
 RUN yes | pecl install xdebug \
@@ -28,5 +29,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
+
+# Create Supervisor log directories
+RUN mkdir -p /var/log/supervisor
+
+# Start Supervisor to manage Apache and queue workers
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 WORKDIR /var/www/html

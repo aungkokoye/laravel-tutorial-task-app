@@ -72,6 +72,20 @@ return [
             'after_commit' => false,
         ],
 
+        'rabbitmq' => [
+            'driver' => 'rabbitmq',
+
+            'hosts' => [
+                [
+                    'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+                    'port' => env('RABBITMQ_PORT', 5672),
+                    'user' => env('RABBITMQ_USER', 'guest'),
+                    'password' => env('RABBITMQ_PASSWORD', 'guest'),
+                    'vhost' => env('RABBITMQ_VHOST', '/'),
+                ],
+            ],
+        ],
+
     ],
 
     /*
@@ -108,5 +122,9 @@ return [
         'database' => env('DB_CONNECTION', 'sqlite'),
         'table' => 'failed_jobs',
     ],
+
+    'test_queue' => env('RABBITMQ_TEST_QUEUE', 'test'),
+    'notification_queue' => env('RABBITMQ_NOTIFICATION_QUEUE', 'notification'),
+    'queue_connection' => env('QUEUE_CONNECTION', 'rabbitmq')
 
 ];

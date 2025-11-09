@@ -24,10 +24,12 @@ docker exec -it laravel_app bash
 
 ````
 - composer install 
+- supervisorctl start queue_worker
 - npm install && npm run dev
 - php artisan key:generate
 - php artisan  migrate:fresh --seed
 ````
+
 #### PHPStorm IDE
 DB settings
 ````
@@ -64,7 +66,17 @@ It is accessible at `http://localhost:15672` with the following credentials:
 Username: guest
 Password: guest
 ```
+#### Supervisord Information:
 
+Supervisord is used to manage the background processes in the application.
+
+Please check the `supervisord.conf` file for more information.
+
+To manage the queue worker using Supervisor, open http://localhost:9001 with the following credentials:
+```
+Username: guest
+Password: guest
+```
 #### ID Plugin settings  (used composer package "barryvdh/laravel-ide-helper")
 ````
 php artisan ide-helper:generate
