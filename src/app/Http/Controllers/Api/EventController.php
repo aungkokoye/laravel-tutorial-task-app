@@ -18,6 +18,7 @@ class EventController extends BaseController
     public function __construct()
     {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
+        $this->middleware('throttle:3, 1')->only(['store', 'update', 'destroy']);
     }
 
     private array $relations = ['user', 'attendees'];
