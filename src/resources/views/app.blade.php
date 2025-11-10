@@ -26,6 +26,14 @@
         .error {
             @apply text-red-500 text-sm
         }
+
+        .btn-primary {
+            @apply bg-blue-400 text-white hover:bg-blue-700;
+        }
+
+        .btn-success {
+            @apply bg-green-400 text-white hover:bg-green-700;
+        }
     </style>
     {{-- blade-formatter-enable --}}
 
@@ -33,7 +41,18 @@
 </head>
 
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
-@livewireScripts
+    @livewireScripts
+
+    <div class="mb-4">
+        @livewire('create-poll')
+    </div>
+
+    <hr class="border-t border-gray-200 mb-4" />
+
+    <div class="mb-4">
+        @livewire('polls')
+    </div>
+
 </body>
 
 </html>
